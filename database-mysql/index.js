@@ -17,12 +17,22 @@ const getAllLines = function(cb) {
 	});	
 }
 
-// - Fill in the `getAllLines` function in `db/index.js` to retrieve all of the lines from the `service_lines` table in the database.
 
-//   - *NOTE for the curious - the table in the database is called `service_lines` because "lines" is a reserved word in MySQL.* 
-
+const getAllStops = function(cb, id) {
+  var q = 'SELECT stations.name FROM stations INNER JOIN stops ON stops.station_id = stations.id WHERE stops.line_id = ?';
+  connection.query(q, [id] , function(error, results, fields) {
+    if (error) {
+      console.log("Error message:" + error);
+    } else {
+      console.log("Success");
+      return cb(results);
+    }
+  }); 
+}
 
 
 module.exports = {
-  getAllLines
+  getAllLines,
+  getAllStops
 };
+

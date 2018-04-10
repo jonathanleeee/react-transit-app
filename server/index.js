@@ -22,10 +22,26 @@ app.get('/api/lines', (req, res) => {
   db.getAllLines((results) => {
   	res.status(200).send(results);
   });
-  // - In `server/index.js`, fill in the request handler that will respond to `GET` requests to `/api/lines` by sending JSON of the service lines stored in the database. 
 
-  // - You should use the `getAllLines` function you wrote earlier in this step in your implementation.
 });
+
+app.get('/api/lines/:lineId', (req, res) => {
+  // TODO - your code here!
+  db.getAllStops((results) => {
+  	res.status(200).send(results);
+  },req.params.lineId);
+
+});
+
+
+
+// - In `server/index.js`, add an Express route handler that will respond to `GET` requests to `/api/lines/:lineId` by sending  JSON of the stops along one service line. 
+//   - Use the database helper function you wrote earlier in this step in your implementation.
+//   - Use Express' [Route Parameters](http://expressjs.com/en/guide/routing.html#route-parameters) to get the `lineId` out of the request URL inside your request handler function.
+
+
+
+
 
 // Write additional route handlers as needed below!
 

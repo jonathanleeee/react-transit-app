@@ -1,6 +1,6 @@
 module.exports = {
   host: 'localhost',
-  user: 'jon',
+  user: 'root',
   password: 'password',
   database: 'transit_planner'
 };

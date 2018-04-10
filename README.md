@@ -297,3 +297,5 @@ Implement this step by doing the following:
 * [MDN](https://developer.mozilla.org/)
 * [Stack Overflow](http://stackoverflow.com/)
 * [Google Search](https://google.com) to search for the correct page on any of the documentation above
+
+## How to start the environment guide

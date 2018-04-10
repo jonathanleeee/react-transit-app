@@ -15,9 +15,11 @@ class Lines extends React.Component {
 constructor(props) {
   super(props);
   this.state = {
-    lines: []
+    lines: [],
+    stops: []
   };
   this.url = "http://localhost:3000/api/lines";
+  this.stopUrl = "http://localhost:3000/api/lines/1"
 }
 
 
@@ -42,6 +44,15 @@ printError(error) {
   console.log(error);
 }
 
+getStopsFromJSON(data) {
+  let stopArray = []
+  for (var i = 0; i < data.length; i++) {
+    stopArray.push(data[i].name);
+    console.log(data[i].name)
+  }
+  return stopArray;
+}
+
 componentDidMount() {
   fetch(this.url)
   .then(this.handleErrors)
@@ -50,6 +61,16 @@ componentDidMount() {
     this.setState({lines: lineArray})
   })
   .catch(this.printError)
+
+
+  fetch(this.stopUrl)
+  .then(this.handleErrors)
+  .then(this.getStopsFromJSON)
+  .then((stopArray) => {
+    this.setState({stops: stopArray})
+  })
+  .catch(this.printError)
+
 }
 
 
@@ -66,15 +87,7 @@ render() {
         </div>
         <div className="lines-stop-list">
           <ul>
-            <li>Hardcoded Stop 1</li>
-            <li>Hardcoded Stop 2</li>
-            <li>Hardcoded Stop 3</li>
-            <li>Hardcoded Stop 4</li>
-            <li>Hardcoded Stop 5</li>
-            <li>Hardcoded Stop 6</li>
-            <li>Hardcoded Stop 7</li>
-            <li>Hardcoded Stop 8</li>
-            <li>Hardcoded Stop 9</li>
+            {this.state.stops.map((l,i) => <li key={i}>{l}</li>)}
           </ul>
         </div>
       </div>
