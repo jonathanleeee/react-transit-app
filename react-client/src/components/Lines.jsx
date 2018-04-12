@@ -16,10 +16,12 @@ constructor(props) {
   super(props);
   this.state = {
     lines: [],
-    stops: []
+    stops: [],
+    value: 1
   };
   this.url = "http://localhost:3000/api/lines";
-  this.stopUrl = "http://localhost:3000/api/lines/1"
+  this.stopUrl = "http://localhost:3000/api/lines/";
+  this.handleChange = this.handleChange.bind(this);
 }
 
 
@@ -53,6 +55,21 @@ getStopsFromJSON(data) {
   return stopArray;
 }
 
+handleChange(event) {
+  this.setState({value: event.target.value});
+  this.resetStops();
+}
+
+resetStops() {
+  fetch(this.stopUrl + this.state.value)
+  .then(this.handleErrors)
+  .then(this.getStopsFromJSON)
+  .then((stopArray) => {
+    this.setState({stops: stopArray})
+  })
+  .catch(this.printError)
+}
+
 componentDidMount() {
   fetch(this.url)
   .then(this.handleErrors)
@@ -63,7 +80,7 @@ componentDidMount() {
   .catch(this.printError)
 
 
-  fetch(this.stopUrl)
+  fetch(this.stopUrl + this.state.value)
   .then(this.handleErrors)
   .then(this.getStopsFromJSON)
   .then((stopArray) => {
@@ -81,8 +98,8 @@ render() {
       <div className="lines-view">
         <div className="selections">
           Choose a line:
-          <select>
-            {this.state.lines.map((l,i) => <option key={i}>{l}</option>)}
+          <select value={this.state.value} onChange={this.handleChange}>
+            {this.state.lines.map((l,i) => <option value={i+1} key={i}>{l}</option>)}
           </select>
         </div>
         <div className="lines-stop-list">
