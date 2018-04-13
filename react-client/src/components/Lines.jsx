@@ -17,7 +17,7 @@ constructor(props) {
   this.state = {
     lines: [],
     stops: [],
-    value: 1
+    currentId: 1
   };
   this.url = "http://localhost:3000/api/lines";
   this.stopUrl = "http://localhost:3000/api/lines/";
@@ -33,13 +33,12 @@ handleErrors(res) {
   return res.json();
 }
 
-getServiceLinesFromJSON(data) {
-  let lineArray = []
-  for (var i = 0; i < data.length; i++) {
-    lineArray.push(data[i].name);
-  }
-  return lineArray;
-}
+// getServiceLinesFromJSON(data) {
+//   let lineArray = data.map((num) => {
+//     return num.name;
+//   });
+//   return lineArray;
+// }
   
 
 printError(error) {
@@ -50,18 +49,17 @@ getStopsFromJSON(data) {
   let stopArray = []
   for (var i = 0; i < data.length; i++) {
     stopArray.push(data[i].name);
-    console.log(data[i].name)
   }
   return stopArray;
 }
 
 handleChange(event) {
-  this.setState({value: event.target.value});
+  this.setState({currentId: event.target.value});
   this.resetStops();
 }
 
 resetStops() {
-  fetch(this.stopUrl + this.state.value)
+  fetch(this.stopUrl + this.state.currentId)
   .then(this.handleErrors)
   .then(this.getStopsFromJSON)
   .then((stopArray) => {
@@ -73,21 +71,14 @@ resetStops() {
 componentDidMount() {
   fetch(this.url)
   .then(this.handleErrors)
-  .then(this.getServiceLinesFromJSON)
+  // .then(this.getServiceLinesFromJSON)
   .then((lineArray) => {
     this.setState({lines: lineArray})
   })
   .catch(this.printError)
 
 
-  fetch(this.stopUrl + this.state.value)
-  .then(this.handleErrors)
-  .then(this.getStopsFromJSON)
-  .then((stopArray) => {
-    this.setState({stops: stopArray})
-  })
-  .catch(this.printError)
-
+  this.resetStops();
 }
 
 
@@ -98,8 +89,8 @@ render() {
       <div className="lines-view">
         <div className="selections">
           Choose a line:
-          <select value={this.state.value} onChange={this.handleChange}>
-            {this.state.lines.map((l,i) => <option value={i+1} key={i}>{l}</option>)}
+          <select value={this.state.currentId} onChange={this.handleChange}>
+            {this.state.lines.map((l,i) => <option value={l.id} key={i}>{l.name}</option>)}
           </select>
         </div>
         <div className="lines-stop-list">
